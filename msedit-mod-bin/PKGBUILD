@@ -5,8 +5,9 @@
 # (branch `mk`) and published to the rolling `nightly` GitHub Release:
 #   https://github.com/max-kepler/edit/releases/tag/nightly
 #
-# Install (one-liner from this packaging branch):
-#   curl -fsSL https://raw.githubusercontent.com/max-kepler/edit/packaging/msedit-mod-bin/PKGBUILD -o PKGBUILD && makepkg -si
+# Install (standard Arch workflow — clone, cd, makepkg):
+#   git clone --depth 1 -b packaging https://github.com/max-kepler/edit.git msedit-mod-bin
+#   cd msedit-mod-bin/msedit-mod-bin && makepkg -si
 #
 # sha256 is 'SKIP' because the `nightly` asset is rolling (rebuilt on every
 # push to `mk`). To enable strict verification, replace 'SKIP' with the value

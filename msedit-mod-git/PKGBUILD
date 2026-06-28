@@ -3,8 +3,9 @@
 # Builds the max-kepler modified Microsoft Edit from source (branch `mk`).
 # Slower than `-bin` (compiles with Rust), but no prebuilt binary needed.
 #
-# Install (one-liner from this packaging branch):
-#   curl -fsSL https://raw.githubusercontent.com/max-kepler/edit/packaging/msedit-mod-git/PKGBUILD -o PKGBUILD && makepkg -si
+# Install (standard Arch workflow — clone, cd, makepkg):
+#   git clone --depth 1 -b packaging https://github.com/max-kepler/edit.git msedit-mod-git
+#   cd msedit-mod-git/msedit-mod-git && makepkg -si
 
 _pkgbase=msedit
 pkgname="$_pkgbase-mod-git"
