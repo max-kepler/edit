@@ -712,6 +712,7 @@ impl Tui {
             last_modal: None,
             focused_node: None,
             next_block_id_mixin: 0,
+            textarea_focused: false,
             needs_settling: false,
 
             #[cfg(debug_assertions)]
@@ -1378,6 +1379,9 @@ pub struct Context<'a, 'input> {
     last_modal: Option<&'a NodeCell<'a>>,
     focused_node: Option<&'a NodeCell<'a>>,
     next_block_id_mixin: u64,
+    /// True if the main (multi-line) textarea had focus during this frame.
+    /// Used by the application to decide whether Escape should exit the editor.
+    textarea_focused: bool,
     needs_settling: bool,
 
     #[cfg(debug_assertions)]
@@ -1731,6 +1735,11 @@ impl<'a> Context<'a, '_> {
     /// Returns None if the input was already consumed.
     pub fn keyboard_input(&self) -> Option<InputKey> {
         if self.input_consumed { None } else { self.input_keyboard }
+    }
+
+    /// Returns true if the main (multi-line) textarea had focus during this frame.
+    pub fn textarea_focused(&self) -> bool {
+        self.textarea_focused
     }
 
     #[inline]
@@ -2161,6 +2170,13 @@ impl<'a> Context<'a, '_> {
             has_focus: self.tui.is_node_focused(node.id),
         });
 
+        // Track whether the main (multi-line) textarea has focus, so that the
+        // application can bind Escape to "exit" without hijacking Escape from
+        // other focusable widgets (menubar, statusbar buttons, pickers, ...).
+        if !single_line && self.tui.is_node_focused(node.id) {
+            self.textarea_focused = true;
+        }
+
         let content = match node.content {
             NodeContent::Textarea(ref mut content) => content,
             _ => unreachable!(),
@@ -2401,15 +2417,10 @@ impl<'a> Context<'a, '_> {
                 vk::ESCAPE => {
                     // If there was a selection, clear it and show the cursor (= fallthrough).
                     if !tb.clear_selection() {
-                        if single_line {
-                            // If this is just a simple input field, don't consume the escape key
-                            // (early return) and don't show the cursor (= return false).
-                            return false;
-                        }
-
-                        // If this is a textarea, don't show the cursor if
-                        // the escape key was pressed and nothing happened.
-                        make_cursor_visible = false;
+                        // Nothing to clear: don't consume Escape. This lets the
+                        // application use a plain Escape press to exit the editor
+                        // (mirroring Ctrl+Q), while input fields already did the same.
+                        return false;
                     }
                 }
                 vk::PRIOR => {

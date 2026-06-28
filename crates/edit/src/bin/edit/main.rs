@@ -387,6 +387,14 @@ fn draw(ctx: &mut Context, state: &mut State) {
             state.wants_search.focus = true;
         } else if key == vk::F3 {
             search_execute(ctx, state, SearchAction::Search);
+        } else if key == vk::ESCAPE
+            && (ctx.textarea_focused() || state.documents.active().is_none())
+            && !state.menubar_contains_focus
+        {
+            // Exit the editor on Escape. If there are unsaved changes, this
+            // routes through `draw_handle_wants_exit` which raises the standard
+            // "Save / Don't save / Cancel" dialog (same as Ctrl+Q).
+            state.wants_exit = true;
         } else {
             return;
         }
