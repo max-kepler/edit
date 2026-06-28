@@ -1,0 +1,19 @@
+pkgbase = msedit-mod-git
+	pkgdesc = A simple editor for simple needs (Microsoft Edit) — max-kepler modified build
+	pkgver = 2.0.0.r0.g4d62b54
+	pkgrel = 1
+	url = https://github.com/max-kepler/edit
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	makedepends = git
+	makedepends = rust
+	depends = icu
+	provides = msedit
+	conflicts = msedit
+	conflicts = msedit-git
+	conflicts = msedit-mod-bin
+	source = msedit::git+https://github.com/max-kepler/edit.git#branch=mk
+	sha256sums = SKIP
+
+pkgname = msedit-mod-git

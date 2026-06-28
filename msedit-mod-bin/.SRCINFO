@@ -1,0 +1,16 @@
+pkgbase = msedit-mod-bin
+	pkgdesc = A simple editor for simple needs (Microsoft Edit) — max-kepler modified build (prebuilt)
+	pkgver = 2.0.0.r448.g352ab84
+	pkgrel = 1
+	url = https://github.com/max-kepler/edit
+	arch = x86_64
+	license = MIT
+	depends = icu
+	provides = msedit
+	conflicts = msedit
+	conflicts = msedit-git
+	conflicts = msedit-mod-git
+	source_x86_64 = msedit-x86_64.tar.zst::https://github.com/max-kepler/edit/releases/download/nightly/msedit-x86_64.tar.zst
+	sha256sums_x86_64 = SKIP
+
+pkgname = msedit-mod-bin
